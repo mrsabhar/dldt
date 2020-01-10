@@ -11,11 +11,14 @@
 #ifdef ENABLE_UNICODE_PATH_SUPPORT
 #include <string>
 #include <codecvt>
+#endif
 #include <locale>
 
 namespace InferenceEngine {
 namespace details {
-
+template<typename C>
+using enableIfSupportedChar = typename std::enable_if<(std::is_same<C, char>::value || std::is_same<C, wchar_t>::value)>::type;
+#ifdef ENABLE_UNICODE_PATH_SUPPORT
 /**
 * @brief Conversion from wide character string to a single-byte chain.
 */
@@ -32,8 +35,7 @@ inline const std::wstring multiByteCharToWString(const char* str) {
     std::wstring result = wstring_encoder.from_bytes(str);
     return result;
 }
-
+#endif  // ENABLE_UNICODE_PATH_SUPPORT
 }  // namespace details
 }  // namespace InferenceEngine
 
-#endif

@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <utility>
 #include <string>
-
+#include <file_utils.h>
 #include <cpp/ie_cnn_network.h>
 #include <cnn_network_impl.hpp>
 #include <tuple>
@@ -112,6 +112,19 @@ INFERENCE_ENGINE_API_CPP(std::unordered_set<DataPtr>)
 getRootDataObjects(ICNNNetwork &network);
 
 INFERENCE_ENGINE_API_CPP(std::string) getIELibraryPath();
+#ifdef ENABLE_UNICODE_PATH_SUPPORT
+ INFERENCE_ENGINE_API_CPP(std::wstring) getIELibraryPathW();
+inline ::FileUtils::FilePath getInferenceEngineLibraryPath() {
+    return getIELibraryPathW();
+    
+}
+#else
+ inline ::FileUtils::FilePath getInferenceEngineLibraryPath() {
+    return getIELibraryPath();
+    
+}
+#endif  // ENABLE_UNICODE_PATH_SUPPORT
+
 
 }  // namespace InferenceEngine
 

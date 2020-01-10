@@ -93,7 +93,7 @@ InferenceEngine::InferencePlugin Engine::GetDevicePlugin(const std::string& devi
     if (nullptr == _core) {
         IE_SUPPRESS_DEPRECATED_START
         // try to create plugin
-        PluginDispatcher dispatcher({""});
+        PluginDispatcher dispatcher({ file_name_t() });
         plugin = dispatcher.getPluginByDevice(device);
         IE_SUPPRESS_DEPRECATED_END
     } else {

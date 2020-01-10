@@ -87,13 +87,13 @@ public:
 using PreProcessDataPtr = InferenceEngine::details::SOPointer<IPreProcessData>;
 
 inline PreProcessDataPtr CreatePreprocDataHelper() {
-    std::string libraryName = "inference_engine_preproc";
-    std::string preprocLibraryPath = ::FileUtils::makeSharedLibraryName(getIELibraryPath(), libraryName);
-    IE_ASSERT(::FileUtils::isSharedLibrary(preprocLibraryPath));
+    FileUtils::FilePath libraryName = FileUtils::toFilePath("inference_engine_preproc");
+    FileUtils::FilePath preprocLibraryPath = FileUtils::makeSharedLibraryName(getInferenceEngineLibraryPath(), libraryName);
 
-    if (!::FileUtils::fileExist(preprocLibraryPath)) {
+    if (!FileUtils::fileExist(preprocLibraryPath)) {
         THROW_IE_EXCEPTION << "Please, make sure that pre-processing library "
-            << ::FileUtils::makeSharedLibraryName("", libraryName) << " is in " << getIELibraryPath();
+             << FileUtils::fromFilePath(::FileUtils::makeSharedLibraryName({}, libraryName)) << " is in "
+             << getIELibraryPath();
     }
 
     return PreProcessDataPtr(preprocLibraryPath);
