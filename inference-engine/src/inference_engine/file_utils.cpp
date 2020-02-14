@@ -8,19 +8,17 @@
 #include <string>
 #include <cstring>
 
-#include <w_unistd.h>
-
 #ifdef __MACH__
-    #include <mach/clock.h>
-    #include <mach/mach.h>
+#include <mach/clock.h>
+#include <mach/mach.h>
 #endif
 
 #include "details/os/os_filesystem.hpp"
 
 #if defined(WIN32) || defined(WIN64)
     // Copied from linux libc sys/stat.h:
-    #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
-    #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #endif
 
 long long FileUtils::fileSize(const char *charfilepath) {
@@ -51,36 +49,4 @@ void FileUtils::readAllFile(const std::string &string_file_name, void *buffer, s
     }
 
     inputFile.close();
-}
-
-std::string FileUtils::folderOf(const std::string &filepath) {
-    auto pos = filepath.rfind(FileSeparator);
-    if (pos == std::string::npos) pos = filepath.rfind(FileSeparator2);
-    if (pos == std::string::npos) return "";
-    return filepath.substr(0, pos);
-}
-
-std::string FileUtils::makePath(const std::string &folder, const std::string &file) {
-    if (folder.empty()) return file;
-    return folder + FileSeparator + file;
-}
-
-std::string FileUtils::fileNameNoExt(const std::string &filepath) {
-    auto pos = filepath.rfind('.');
-    if (pos == std::string::npos) return filepath;
-    return filepath.substr(0, pos);
-}
-
-std::string FileUtils::fileExt(const char *filename) {
-    return fileExt(std::string(filename));
-}
-
-std::string FileUtils::fileExt(const std::string &filename) {
-    auto pos = filename.rfind('.');
-    if (pos == std::string::npos) return "";
-    return filename.substr(pos + 1);
-}
-
-bool FileUtils::isSharedLibrary(const std::string& fileName) {
-    return 0 == strncasecmp(fileExt(fileName).c_str(), SharedLibraryExt, strlen(SharedLibraryExt));
 }
